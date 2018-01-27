@@ -43,7 +43,7 @@
                 <!--</select>-->
 
                 <!--<clr-dropdown name="clr-dropdown-tables" [(ngModel)]="model.tableNames">-->
-                <!-- TODO drop down -->
+
                 <clr-dropdown name="clr-dropdown-tables"  >
                     <button clrDropdownTrigger class="btn">
                         {{currentTableName}}
@@ -76,8 +76,8 @@
 
         </div>
 
-        <button type="submit" class="btn btn-success" id="runButton" (click)="go()">Gather Data</button>
-        <button class="btn btn-primary"  id="analyzeButton" (click)="analyze()">Analyze</button>
+        <button type="submit" class="btn btn-success" id="runButton" (click)="gatherData()">Gather Data</button>
+        <button class="btn btn-primary" disabled="{{isAnalyzeDisabled ? true : undefined}}" id="analyzeButton" (click)="analyze()">Analyze</button>
         <button class="btn btn-primary" id="clearButton" (click)="clear()">Clear</button>
 
     <!--</section>-->

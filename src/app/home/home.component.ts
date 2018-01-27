@@ -35,7 +35,9 @@ export class HomeComponent {
 
     currentTableName = 'Choose DB tables';
 
-    go(): void {
+    isAnalyzeDisabled = true;
+
+    gatherData(): void {
         // run server request
         this.homeService.getGatherDataResult("messages").subscribe(r => {
             console.log("Gather data result: " + JSON.stringify(r))
@@ -44,6 +46,7 @@ export class HomeComponent {
             this.analysisId = r.analysisId
             this.analyzeIsDisabled = false;
             this.isCleared = false;
+            this.isAnalyzeDisabled = false;
         });
         //showResult();
     }
@@ -65,14 +68,11 @@ export class HomeComponent {
     }
 
     clear(): void {
+        this.analyzeIsDisabled = true;
         this.currentTableName = 'Choose DB tables';
         this.isCleared = true;
         this.results.length = 0;
         this.results = [];
         console.clear();
-    }
-
-    showResult(): void {
-
     }
 }
