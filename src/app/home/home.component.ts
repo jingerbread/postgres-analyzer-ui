@@ -52,7 +52,8 @@ export class HomeComponent {
     }
 
     clear(): void {
-        // clear previous results
+       this.result = '';
+       console.clear();
     }
 
     showResult(): void {
