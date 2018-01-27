@@ -25,21 +25,30 @@ export class HomeComponent {
 
     result:String;
 
+    analysisId:String
+
     submitted = false;
 
     go(): void {
         // run server request
-        this.homeService.getGetherDataResult("messages").subscribe(r => console.log("result: " + r));
-
-        this.submitted = true;
-        console.log("model "+this.model.columns_added+" "+this.model.rows_updated+" "+this.model.schema_version+" "+this.model.tableNames);
-        this.messageService.add(`Success!`);
-        this.result = 'Data has been successfully collected. '
+        this.homeService.getGatherDataResult("messages").subscribe(r => {
+            console.log("Gather data result: " + JSON.stringify(r))
+            this.result = 'Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId
+            this.submitted = true;
+            this.analysisId = r.analysisId
+        });
         //showResult();
     }
 
     analyze(): void {
-        // run server request
+        this.homeService.performAnalysis(this.analysisId).subscribe(r => {
+            console.log("Analysis result: " + JSON.stringify(r))
+            this.result = 'Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId  + "."
+                + '\nSchemaUpdateStatus: ' + r.data[0].schemaUpdateStatus
+             + '\nColumnAdded: ' + JSON.stringify(r.data[0].columnAdded)
+                + '\nColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted)
+                + '\nColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged);
+        });
     }
 
     clear(): void {

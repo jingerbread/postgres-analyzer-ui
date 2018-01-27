@@ -5,11 +5,13 @@ import {Observable} from "rxjs";
 import {Result} from "./home/Result";
 import {of} from "rxjs/observable/of";
 import {RequestOptions} from "@angular/http";
+import {AnalysisResult} from "./home/AnalysisResult";
 
 @Injectable()
 export class HomeService {
 
-    private getherDataUrl = 'http://localhost:8088/api/v1/gatherDataForAnalysis';  // URL to web api
+    private gatherDataUrl = 'http://localhost:8088/api/v1/gatherDataForAnalysis';  // URL to web api
+    private performAnalysisUrl = 'http://localhost:8088/api/v1/analyze?analysisId=';  // URL to web api
 
     constructor(private messageService: MessageService, private http: HttpClient,) { }
 
@@ -22,12 +24,20 @@ export class HomeService {
         this.messageService.add('Analyzer: ' + message);
     }
 
-    getGetherDataResult(tableName: String): Observable<Result> {
+    getGatherDataResult(tableName: String): Observable<Result> {
 
-        return this.http.post<Result>( this.getherDataUrl, "[\"" + tableName + "\"]",
+        return this.http.post<Result>( this.gatherDataUrl, "[\"" + tableName + "\"]",
             {headers: new HttpHeaders()
                 .append('Accept', 'application/json')
                 .append('Content-Type', 'application/json')});
+    }
+
+    performAnalysis(analysisId: String): Observable<AnalysisResult> {
+
+        return this.http.post<AnalysisResult>( this.performAnalysisUrl + 'o0WuT'/*TODO: analysisId*/, null,
+            {headers: new HttpHeaders()
+                    .append('Accept', 'application/json')
+                    .append('Content-Type', 'application/json')});
     }
 
 }
