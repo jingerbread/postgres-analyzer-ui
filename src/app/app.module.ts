@@ -11,7 +11,6 @@ import { AboutComponent } from "./about/about.component";
 import {HomeService} from "./home.service";
 import { MessagesComponent } from './messages/messages.component';
 import { MessageService } from './message.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({

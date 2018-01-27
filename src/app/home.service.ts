@@ -9,7 +9,7 @@ import {RequestOptions} from "@angular/http";
 @Injectable()
 export class HomeService {
 
-    private getherDataUrl = 'http://ruenmalygm1l1c:8088/api/v1/gatherDataForAnalysis';  // URL to web api
+    private getherDataUrl = 'http://localhost:8088/api/v1/gatherDataForAnalysis';  // URL to web api
 
     constructor(private messageService: MessageService, private http: HttpClient,) { }
 
@@ -23,15 +23,11 @@ export class HomeService {
     }
 
     getGetherDataResult(tableName: String): Observable<Result> {
-        let headers = new HttpHeaders();
-        headers = headers.append('Accept', 'application/json')
-        headers = headers.append('Content-Type', 'application/json');
 
-        //opts.headers = headers;
         return this.http.post<Result>( this.getherDataUrl, "[\"" + tableName + "\"]",
-            {headers: new HttpHeaders().set('Authorization', 'my-auth-token')
-                .set('Accept', 'application/json')
-                .set('Content-Type', 'application/json')});
+            {headers: new HttpHeaders()
+                .append('Accept', 'application/json')
+                .append('Content-Type', 'application/json')});
     }
 
 }
