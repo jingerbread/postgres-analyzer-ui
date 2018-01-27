@@ -42,7 +42,7 @@
                     <!--<option *ngFor="let tableName of tableNames" [value]="tableName">{{tableName}}</option>-->
                 <!--</select>-->
 
-                <clr-dropdown [(ngModel)]="model.tableNames">
+                <clr-dropdown name="clr-dropdown-tables" >
                     <button clrDropdownTrigger class="btn">
                         Choose DB tables
                         <clr-icon shape="caret down"></clr-icon>
@@ -55,19 +55,19 @@
             </div>
             <br>
             <div class="checkbox">
-                <input type="checkbox" id="check_columns_added" [(ngModel)]="model.columns_added"
+                <input type="checkbox" name="checkbox1" id="check_columns_added" [(ngModel)]="model.columns_added"
                        name="columns_added" checked>
                 <label for="check_columns_added">Columns been added</label>
             </div>
             <div class="checkbox">
-                <input type="checkbox" id="check_rows_updated"  [(ngModel)]="model.rows_updated"
-                       name="rows_updated">
+                <input type="checkbox" name="checkbox2" id="check_rows_updated"  [(ngModel)]="model.rows_updated"
+                       name="rows_updated" checked>
                 <label for="check_rows_updated">Rows been updated</label>
             </div>
             <div class="checkbox">
-                <input type="checkbox" id="check_schema_version" [(ngModel)]="model.schema_version"
-                       name="schema_version">
-                <label for="check_schema_version">Schema version</label>
+                <input type="checkbox" name="checkbox3" id="check_schema_version" [(ngModel)]="model.schema_version"
+                       name="schema_version" checked >
+                <label for="check_schema_version">Column type changed</label>
             </div>
 
         <!--<div *ngFor='let message of messageService.messages'> {{message}} </div>-->
@@ -83,10 +83,10 @@
 
         <br>
         <br>
-
-         <div align="left">
-             <!--<h4>{{result}}</h4>-->
-             <h4><div *ngFor='let result of results' align="top"> {{result}} </div></h4>
+         <div *ngIf="isCleared == false">
+             <div align="left">
+                 <h4><div *ngFor='let result of results' align="top"> {{result}} </div></h4>
+             </div>
          </div>
 
     </section>

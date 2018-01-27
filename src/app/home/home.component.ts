@@ -21,15 +21,17 @@ export class HomeComponent {
 
     analyzeIsDisabled:Boolean = true;
 
-    model = new Options(true,false,false,['view_backupjob','view_bkup_server-mapping','qwview_clonejobe', 'view_host_config'])
+    model = new Options(true,false,true,['view_backupjob','view_bkup_server-mapping','qwview_clonejobe', 'view_host_config'])
 
     tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];
 
-    results: String[] = [];
+    results: string[] = [];
 
     analysisId:String
 
     submitted = false;
+
+    isCleared = true;
 
     go(): void {
         // run server request
@@ -39,6 +41,7 @@ export class HomeComponent {
             this.submitted = true;
             this.analysisId = r.analysisId
             this.analyzeIsDisabled = false;
+            this.isCleared = false;
         });
         //showResult();
     }
@@ -51,12 +54,15 @@ export class HomeComponent {
             this.results.push('ColumnAdded: ' + JSON.stringify(r.data[0].columnAdded));
             this.results.push('ColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted));
             this.results.push('ColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged));
+            this.isCleared = false;
         });
     }
 
     clear(): void {
-       this.results = [];
-       console.clear();
+        this.isCleared = true;
+        this.results.length = 0;
+        this.results = [];
+        console.clear();
     }
 
     showResult(): void {

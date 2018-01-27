@@ -13,7 +13,7 @@ export class HomeService {
     private gatherDataUrl = 'http://localhost:8088/api/v1/gatherDataForAnalysis';  // URL to web api
     private performAnalysisUrl = 'http://localhost:8088/api/v1/analyze?analysisId=';  // URL to web api
 
-    constructor(private messageService: MessageService, private http: HttpClient,) { }
+    constructor(private messageService: MessageService, private http: HttpClient) { }
 
     getMessage() {
         this.messageService.add('Yes');
