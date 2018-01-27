@@ -75,7 +75,7 @@
         </div>
 
         <button type="submit" class="btn btn-success" id="runButton" (click)="go()">Gather Data</button>
-        <button class="btn btn-primary" id="analyzeButton" (click)="analyze()">Analyze</button>
+        <button class="btn btn-primary"  id="analyzeButton" (click)="analyze()">Analyze</button>
         <button class="btn btn-primary" id="clearButton" (click)="clear()">Clear</button>
 
     <!--</section>-->
@@ -84,9 +84,10 @@
         <br>
         <br>
 
-        <div align="left">
-            <h4>{{result}}</h4>
-        </div>
+         <div align="left">
+             <!--<h4>{{result}}</h4>-->
+             <div *ngFor='let result of results' align="top"> {{result}} </div>
+         </div>
 
     </section>
     </div>

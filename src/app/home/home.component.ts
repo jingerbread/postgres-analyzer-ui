@@ -19,11 +19,13 @@ export class HomeComponent {
 
     constructor(private messageService: MessageService, private homeService: HomeService) { }
 
-    model = new Options(true,false,false,['asd','a123','qwe'])
+    analyzeIsDisabled:Boolean = true;
 
-    tableNames = ['asd', 'qwe', '123', '789'];
+    model = new Options(true,false,false,['view_backupjob','view_bkup_server-mapping','qwview_clonejobe', 'view_host_config'])
 
-    result:String;
+    tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];
+
+    results: String[] = [];
 
     analysisId:String
 
@@ -33,9 +35,10 @@ export class HomeComponent {
         // run server request
         this.homeService.getGatherDataResult("messages").subscribe(r => {
             console.log("Gather data result: " + JSON.stringify(r))
-            this.result = 'Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId
+            this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
             this.submitted = true;
             this.analysisId = r.analysisId
+            this.analyzeIsDisabled = false;
         });
         //showResult();
     }
@@ -43,16 +46,16 @@ export class HomeComponent {
     analyze(): void {
         this.homeService.performAnalysis(this.analysisId).subscribe(r => {
             console.log("Analysis result: " + JSON.stringify(r))
-            this.result = 'Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId  + "."
-                + '\nSchemaUpdateStatus: ' + r.data[0].schemaUpdateStatus
-             + '\nColumnAdded: ' + JSON.stringify(r.data[0].columnAdded)
-                + '\nColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted)
-                + '\nColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged);
+            this.results.push('Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId  + '.');
+            this.results.push('SchemaUpdateStatus: ' + r.data[0].schemaUpdateStatus);
+            this.results.push('ColumnAdded: ' + JSON.stringify(r.data[0].columnAdded));
+            this.results.push('ColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted));
+            this.results.push('ColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged));
         });
     }
 
     clear(): void {
-       this.result = '';
+       this.results = [];
        console.clear();
     }
 
