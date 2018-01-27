@@ -42,13 +42,15 @@
                     <!--<option *ngFor="let tableName of tableNames" [value]="tableName">{{tableName}}</option>-->
                 <!--</select>-->
 
-                <clr-dropdown name="clr-dropdown-tables" >
+                <!--<clr-dropdown name="clr-dropdown-tables" [(ngModel)]="model.tableNames">-->
+                <!-- TODO drop down -->
+                <clr-dropdown name="clr-dropdown-tables"  >
                     <button clrDropdownTrigger class="btn">
-                        Choose DB tables
+                        {{currentTableName}}
                         <clr-icon shape="caret down"></clr-icon>
                     </button>
                     <clr-dropdown-menu>
-                        <a *ngFor="let tableName of tableNames" clrDropdownItem>{{tableName}}</a>
+                        <a *ngFor="let tableName of tableNames" (click)="selectTable(tableName)" clrDropdownItem>{{tableName}}</a>
                     </clr-dropdown-menu>
                 </clr-dropdown>
 

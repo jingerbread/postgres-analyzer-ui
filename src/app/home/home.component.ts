@@ -33,6 +33,8 @@ export class HomeComponent {
 
     isCleared = true;
 
+    currentTableName = 'Choose DB tables';
+
     go(): void {
         // run server request
         this.homeService.getGatherDataResult("messages").subscribe(r => {
@@ -58,7 +60,12 @@ export class HomeComponent {
         });
     }
 
+    selectTable(tableName: String) {
+        this.currentTableName = tableName;
+    }
+
     clear(): void {
+        this.currentTableName = 'Choose DB tables';
         this.isCleared = true;
         this.results.length = 0;
         this.results = [];
