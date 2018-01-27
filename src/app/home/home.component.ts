@@ -21,6 +21,8 @@ export class HomeComponent {
 
     analyzeIsDisabled:Boolean = true;
 
+    gatherDataIsDisabled:Boolean = true;
+
     model = new Options(true,false,true,['view_backupjob','view_bkup_server-mapping','qwview_clonejobe', 'view_host_config'])
 
     tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];
@@ -75,15 +77,19 @@ export class HomeComponent {
 
     selectTable(tableName: String) {
         this.currentTableName = tableName;
+        this.gatherDataIsDisabled = false;
     }
 
     clear(): void {
-        this.analyzeIsDisabled = true;
-        this.currentTableName = 'Choose DB tables';
-        this.isCleared = true;
         this.results.length = 0;
         this.results = [];
         this.errors = [];
+
+        this.currentTableName = 'Choose DB tables';
+
+        this.isCleared = true;
+        this.analyzeIsDisabled = true;
+        this.gatherDataIsDisabled = true;
         console.clear();
     }
 }
