@@ -8,12 +8,16 @@ import { AppComponent } from './app.component';
 import { ROUTING } from "./app.routing";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
+import {HomeService} from "./home.service";
+import { MessagesComponent } from './messages/messages.component';
+import { MessageService } from './message.service';
 
 @NgModule({
     declarations: [
         AppComponent,
         AboutComponent,
-        HomeComponent
+        HomeComponent,
+        MessagesComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -23,7 +27,7 @@ import { AboutComponent } from "./about/about.component";
         ClarityModule,
         ROUTING
     ],
-    providers: [],
+    providers: [HomeService, MessageService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
