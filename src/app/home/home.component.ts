@@ -27,7 +27,9 @@ export class HomeComponent {
 
     results: string[] = [];
 
-    analysisId:String
+    errors: string[] = [];
+
+    analysisId:string
 
     submitted = false;
 
@@ -47,8 +49,12 @@ export class HomeComponent {
             this.analyzeIsDisabled = false;
             this.isCleared = false;
             this.isAnalyzeDisabled = false;
+            this.errors = [];
+        }, error => {
+            this.isCleared = false;
+            console.error("Can't gather data result error occured: " + JSON.stringify(error.message));
+            this.errors.push("Can't gather data result error occured: " + JSON.stringify(error.message);
         });
-        //showResult();
     }
 
     analyze(): void {
@@ -60,7 +66,11 @@ export class HomeComponent {
             this.results.push('ColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted));
             this.results.push('ColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged));
             this.isCleared = false;
-        });
+        }, error => {
+            this.isCleared = false;
+            console.error("Can't perform table analysis error occured: " + JSON.stringify(error.message));
+            this.errors.push("Can't perform table analysis error occured: " + JSON.stringify(error.message);
+        );
     }
 
     selectTable(tableName: String) {
@@ -73,6 +83,7 @@ export class HomeComponent {
         this.isCleared = true;
         this.results.length = 0;
         this.results = [];
+        this.errors = [];
         console.clear();
     }
 }

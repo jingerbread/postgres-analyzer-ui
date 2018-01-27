@@ -15,34 +15,6 @@
             <label>Choose options what you want to analyze:</label>
             <!--<div class="form-group">-->
             <div>
-                <!--<clr-dropdown>-->
-                    <!--<button clrDropdownTrigger class="btn">-->
-                        <!--Choose DB tables-->
-                        <!--<clr-icon shape="caret down"></clr-icon>-->
-                    <!--</button>-->
-                    <!--<clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">-->
-                        <!--<a clrDropdownItem >dd_analysis</a>-->
-                        <!--<a clrDropdownItem >dpa.view_backupjob</a>-->
-                    <!--</clr-dropdown-menu>-->
-                <!--</clr-dropdown>-->
-
-                <!--<clr-dropdown>-->
-                    <!--<button clrDropdownTrigger class="btn">-->
-                        <!--Choose DB tables-->
-                        <!--<clr-icon shape="caret down"></clr-icon>-->
-                    <!--</button>-->
-                    <!--<clr-dropdown-menu>-->
-                        <!--<a *ngFor="let tableName of tableNames" clrDropdownItem>{{tableName}}</a>-->
-                    <!--</clr-dropdown-menu>-->
-                <!--</clr-dropdown>-->
-
-                <!--<select class="form-control"  id="tableNames"-->
-                        <!--required-->
-                        <!--[(ngModel)]="model.tableNames" name="tableNames">-->
-                    <!--<option *ngFor="let tableName of tableNames" [value]="tableName">{{tableName}}</option>-->
-                <!--</select>-->
-
-                <!--<clr-dropdown name="clr-dropdown-tables" [(ngModel)]="model.tableNames">-->
 
                 <clr-dropdown name="clr-dropdown-tables"  >
                     <button clrDropdownTrigger class="btn">
@@ -72,8 +44,6 @@
                 <label for="check_schema_version">Column type changed</label>
             </div>
 
-        <!--<div *ngFor='let message of messageService.messages'> {{message}} </div>-->
-
         </div>
 
         <button type="submit" class="btn btn-success" id="runButton" (click)="gatherData()">Gather Data</button>
@@ -84,12 +54,13 @@
     <!--<section class="form-block">-->
 
         <br>
-        <br>
          <div *ngIf="isCleared == false">
              <div align="left">
-                 <h4><div *ngFor='let result of results' align="top"> {{result}} </div></h4>
+                 <h4><div *ngFor='let result of results' class='is-info' align="top"> {{result}} </div></h4>
+                 <div *ngFor='let error of errors' class="is-error"> {{error}} </div>
              </div>
          </div>
+
 
     </section>
     </div>
