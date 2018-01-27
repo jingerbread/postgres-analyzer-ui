@@ -8,6 +8,8 @@ import { HomeService } from '../home.service';
 import { MessageService } from '../message.service';
 
 import { Options } from '../options'
+import {Result} from "./Result";
+import {Observable} from "rxjs";
 
 @Component({
     styleUrls: ['./home.component.scss'],
@@ -15,7 +17,7 @@ import { Options } from '../options'
 })
 export class HomeComponent {
 
-    constructor(private messageService: MessageService) { }
+    constructor(private messageService: MessageService, private homeService: HomeService) { }
 
     model = new Options(true,false,false,['asd','a123','qwe'])
 
@@ -27,10 +29,12 @@ export class HomeComponent {
 
     go(): void {
         // run server request
+        this.homeService.getGetherDataResult("messages").subscribe(r => console.log("result: " + r));
+
         this.submitted = true;
         console.log("model "+this.model.columns_added+" "+this.model.rows_updated+" "+this.model.schema_version+" "+this.model.tableNames);
         this.messageService.add(`Success!`);
-        this.result = 'Data has been '
+        this.result = 'Data has been successfully collected. '
         //showResult();
     }
 
