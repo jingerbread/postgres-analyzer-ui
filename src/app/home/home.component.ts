@@ -34,6 +34,8 @@ export class HomeComponent {
 
     columnSchemaChanges: ColumnSchemaChange[] = [];
 
+    schemaStatus: string;
+
     errors: string[] = [];
 
     isResultsAndErrosAreHidden = true;
@@ -68,10 +70,11 @@ export class HomeComponent {
                 this.results.push('Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId + '.');
                 if (r.data.length > 0) {
                     let analysis: TableSchemaAnalysisResult = r.data[0];
-                    this.results.push('Schema Update Status: ' + r.data[0].schemaUpdateStatus);
-                    this.results.push('Column Schema Changes: ' + JSON.stringify(r.data[0].columnChanges));
+                    this.results.push('Schema Update Status: ' + analysis.schemaUpdateStatus);
+                    /*this.results.push('Column Schema Changes: ' + JSON.stringify(analysis.columnChanges));*/
 
-                    this.columnSchemaChanges = r.data[0].columnChanges
+                    this.columnSchemaChanges = analysis.columnChanges;
+                    this.schemaStatus = analysis.schemaUpdateStatus;
                     this.isResultsAndErrosAreHidden = false;
                 } else {
                     this.results.push('No data');
