@@ -1,5 +1,6 @@
 import {Column} from "./Column";
 import {ColumnTypeChanged} from "./ColumnTypeChanged";
+import {ColumnSchemaChange} from "./ColumnSchemaChange";
 
 export class TableSchemaAnalysisResult {
 
@@ -8,8 +9,6 @@ export class TableSchemaAnalysisResult {
         public newVersion: number,
         public tableName: string,
         public schemaUpdateStatus: string,
-        public columnAdded: Column[],
-        public columnDeleted: Column[],
-        public columnTypeChanged: ColumnTypeChanged[],
+        public columnChanges: ColumnSchemaChange[]
     ) { }
 }

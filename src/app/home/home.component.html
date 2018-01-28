@@ -54,13 +54,39 @@
     <!--<section class="form-block">-->
 
         <br>
-         <div *ngIf="isCleared == false">
+         <div *ngIf="isResultsAndErrosAreHidden == false">
              <div align="left">
-                 <h4><div *ngFor='let result of results' class='is-info' align="top"> {{result}} </div></h4>
+                 <div *ngIf="errors.length == 0">
+                    <!-- Show results if there is no errors -->
+                    <h4><div *ngFor='let result of results' class='is-info' align="top"> {{result}} </div></h4>
+
+                     <div *ngIf="columnSchemaChanges.length != 0">
+                         <b>Analysis {{analysisId}} results</b>
+                         <p>{{currentTableName}} column schema changes</p>
+                         <clr-datagrid>
+                             <clr-dg-column>Name</clr-dg-column>
+                             <clr-dg-column>Action</clr-dg-column>
+                             <clr-dg-column>Old Type</clr-dg-column>
+                             <clr-dg-column>New Type</clr-dg-column>
+
+                             <clr-dg-row *ngFor="let columnChange of columnSchemaChanges">
+                                 <clr-dg-cell>{{columnChange.name}}</clr-dg-cell>
+                                 <clr-dg-cell>{{columnChange.action}}</clr-dg-cell>
+                                 <clr-dg-cell>{{columnChange.oldType}}</clr-dg-cell>
+                                 <clr-dg-cell>{{columnChange.newType}}</clr-dg-cell>
+                             </clr-dg-row>
+
+                             <clr-dg-footer>{{columnSchemaChanges.length}} columnSchemaChange</clr-dg-footer>
+                         </clr-datagrid>
+                     </div>
+
+                 </div>
                  <div *ngFor='let error of errors' class="is-error"> {{error}} </div>
              </div>
-         </div>
 
+
+         </div>
+         <br>
 
     </section>
     </div>

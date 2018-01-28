@@ -10,6 +10,9 @@ import { MessageService } from '../message.service';
 import { Options } from '../options'
 import {Result} from "./Result";
 import {Observable} from "rxjs";
+import {TableSchemaAnalysisResult} from "./TableSchemaAnalysisResult";
+import {ColumnSchemaChange} from "./ColumnSchemaChange";
+import {error} from "selenium-webdriver";
 
 @Component({
     styleUrls: ['./home.component.scss'],
@@ -29,9 +32,11 @@ export class HomeComponent {
 
     results: string[] = [];
 
+    columnSchemaChanges: ColumnSchemaChange[] = [];
+
     errors: string[] = [];
 
-    isCleared = true;
+    isResultsAndErrosAreHidden = true;
 
     analyzeIsDisabled:Boolean = true;
 
@@ -44,11 +49,11 @@ export class HomeComponent {
             this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
             this.analysisId = r.analysisId
             this.analyzeIsDisabled = false;
-            this.isCleared = false;
+            this.isResultsAndErrosAreHidden = false;
             this.isAnalyzeDisabled = false;
             this.errors = [];
         }, error => {
-            this.isCleared = false;
+            this.isResultsAndErrosAreHidden = false;
             console.error("Can't gather data result error occured: " + JSON.stringify(error.message));
             this.errors.push("Can't gather data result error occured: " + JSON.stringify(error.message);
         });
@@ -57,14 +62,23 @@ export class HomeComponent {
     analyze(): void {
         this.homeService.performAnalysis(this.analysisId).subscribe(r => {
             console.log("Analysis result: " + JSON.stringify(r))
-            this.results.push('Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId  + '.');
-            this.results.push('SchemaUpdateStatus: ' + r.data[0].schemaUpdateStatus);
-            this.results.push('ColumnAdded: ' + JSON.stringify(r.data[0].columnAdded));
-            this.results.push('ColumnDeleted: ' + JSON.stringify(r.data[0].columnDeleted));
-            this.results.push('ColumnTypeChanged: ' + JSON.stringify(r.data[0].columnTypeChanged));
-            this.isCleared = false;
+            if (r.error != null) {
+                this.errors.push(r.error)
+            } else {
+                this.results.push('Table schema analysis has been performed, status ' + r.status + '. AnalysisId: ' + r.analysisId + '.');
+                if (r.data.length > 0) {
+                    let analysis: TableSchemaAnalysisResult = r.data[0];
+                    this.results.push('Schema Update Status: ' + r.data[0].schemaUpdateStatus);
+                    this.results.push('Column Schema Changes: ' + JSON.stringify(r.data[0].columnChanges));
+
+                    this.columnSchemaChanges = r.data[0].columnChanges
+                    this.isResultsAndErrosAreHidden = false;
+                } else {
+                    this.results.push('No data');
+                }
+            }
         }, error => {
-            this.isCleared = false;
+            this.isResultsAndErrosAreHidden = false;
             console.error("Can't perform table analysis error occured: " + JSON.stringify(error.message));
             this.errors.push("Can't perform table analysis error occured: " + JSON.stringify(error.message);
         );
@@ -79,10 +93,12 @@ export class HomeComponent {
         this.results.length = 0;
         this.results = [];
         this.errors = [];
+        this.columnSchemaChanges = [];
 
         this.currentTableName = 'Choose DB tables';
+        this.analysisId = null;
 
-        this.isCleared = true;
+        this.isResultsAndErrosAreHidden = true;
         this.analyzeIsDisabled = true;
         this.gatherDataIsDisabled = true;
         console.clear();
