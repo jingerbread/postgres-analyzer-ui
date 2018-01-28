@@ -6,7 +6,8 @@ export class TableSchemaAnalysisResult {
     constructor(
         public oldVersion: number,
         public newVersion: number,
-        public schemaUpdateStatus: String,
+        public tableName: string,
+        public schemaUpdateStatus: string,
         public columnAdded: Column[],
         public columnDeleted: Column[],
         public columnTypeChanged: ColumnTypeChanged[],

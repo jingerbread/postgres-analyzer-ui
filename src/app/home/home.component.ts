@@ -31,9 +31,7 @@ export class HomeComponent {
 
     errors: string[] = [];
 
-    analysisId:string
-
-    submitted = false;
+    analysisId: string
 
     isCleared = true;
 
@@ -46,7 +44,6 @@ export class HomeComponent {
         this.homeService.getGatherDataResult("messages").subscribe(r => {
             console.log("Gather data result: " + JSON.stringify(r))
             this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
-            this.submitted = true;
             this.analysisId = r.analysisId
             this.analyzeIsDisabled = false;
             this.isCleared = false;
