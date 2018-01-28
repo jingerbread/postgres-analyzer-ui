@@ -19,9 +19,9 @@ export class HomeComponent {
 
     constructor(private messageService: MessageService, private homeService: HomeService) { }
 
-    analyzeIsDisabled:Boolean = true;
+    analysisId: string
 
-    gatherDataIsDisabled:Boolean = true;
+    currentTableName = 'Choose DB tables';
 
     model = new Options(true,false,true,['view_backupjob','view_bkup_server-mapping','qwview_clonejobe', 'view_host_config'])
 
@@ -31,13 +31,11 @@ export class HomeComponent {
 
     errors: string[] = [];
 
-    analysisId: string
-
     isCleared = true;
 
-    currentTableName = 'Choose DB tables';
+    analyzeIsDisabled:Boolean = true;
 
-    isAnalyzeDisabled = true;
+    gatherDataIsDisabled:Boolean = true;
 
     gatherData(): void {
         // run server request
