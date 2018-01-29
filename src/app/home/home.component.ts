@@ -19,7 +19,7 @@ import {of} from "rxjs/observable/of";
 export class HomeComponent implements OnInit {
 
     analysisId: string;
-    currentTableName: String = 'Choose DB tables';
+    currentTableName: string = 'Choose DB tables';
     model = new Options(true, false, true, ['view_backupjob', 'view_bkup_server-mapping', 'qwview_clonejobe', 'view_host_config']);
     /*tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];*/
     tableNames: Observable<String[]>;
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
 
     gatherData(): void {
         // run server request
-        this.homeService.gatherDataResult("messages").subscribe(r => {
+        this.homeService.gatherDataResult(this.currentTableName).subscribe(r => {
             console.log("Gather data result: " + JSON.stringify(r));
             this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
             this.analysisId = r.analysisId;
@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    selectTable(tableName: String) {
+    selectTable(tableName: string) {
         this.currentTableName = tableName;
         this.gatherDataIsDisabled = false;
     }
