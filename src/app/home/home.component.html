@@ -1,116 +1,132 @@
 <form #optionForm="ngForm">
     <div class="form-block">
-     <section class="form-block">
-         <div class="form-group">
-             <label>Configure connection</label>
-             <div>
-                 <button class="btn btn-primary" id="connectButton" (click)="showEditConnectionDialog()">Connect to db</button>
-             </div>
-
-             <clr-modal [(clrModalOpen)]="editConnectionDialogIsShown">
-             <h3 class="modal-title">DB Connection dialog</h3>
-             <div class="edit-connection-body modal-body">
-             <p>Edit db connection settings</p>
-                 <form [formGroup]="dbConnectionForm" (ngSubmit)="onSubmit()" novalidate>
-                     <div class="form-group">
-                         <label class="center-block">dbUrl:
-                             <input class="form-control" formControlName="dbUrl">
-                         </label>
-                         <label class="center-block">schema name:
-                             <input class="form-control" formControlName="schemaName">
-                         </label>
-                         <label class="center-block">user:
-                             <input class="form-control" formControlName="user">
-                         </label>
-                         <label class="center-block">password:
-                             <input class="form-control" formControlName="password">
-                         </label>
-                     </div>
-                 </form>
-             </div>
-             <div class="modal-footer">
-             <button type="button" class="btn btn-outline" (click)="closeEditConnectionDialog()">Cancel</button>
-             <button type="button" class="btn btn-primary" [disabled]="dbConnectionForm.pristine" (click)="saveConnectionConfig()">Save</button>
-             </div>
-             </clr-modal>
-         </div>
-
-        <div class="form-group">
-            <label>Select table and analyze options:</label>
-            <!--<div class="form-group">-->
-            <div>
-
-                <clr-dropdown name="clr-dropdown-tables"  >
-                    <button clrDropdownTrigger class="btn">
-                        {{currentTableName}}
-                        <clr-icon shape="caret down"></clr-icon>
+        <section class="form-block">
+            <div class="form-group">
+                <label>Configure connection</label>
+                <div>
+                    <button class="btn btn-primary" id="connectButton" (click)="showEditConnectionDialog()">Connect to
+                        db
                     </button>
-                    <clr-dropdown-menu>
-                        <a *ngFor="let tableName of tableNames | async" (click)="selectTable(tableName)" clrDropdownItem>{{tableName}}</a>
-                    </clr-dropdown-menu>
-                </clr-dropdown>
+                </div>
+
+                <clr-modal [(clrModalOpen)]="editConnectionDialogIsShown" [clrModalSize]="'xxxl'">
+                    <h3 class="modal-title">DB Connection dialog</h3>
+                    <div class=" modal-body edit-connection-body">
+                        <p>Edit db connection settings</p>
+                        <form [formGroup]="dbConnectionForm" (ngSubmit)="onSubmit()" novalidate>
+                            <div class="form-group">
+                                <label class="left-block">dbUrl:
+                                    <input class="form-control" formControlName="dbUrl">
+                                </label>
+
+                                <label class="left-block">schema name:
+                                    <input class="form-control" formControlName="schemaName">
+                                </label>
+
+
+                                <label class="left-block">user:
+                                    <input class="form-control" formControlName="user">
+                                </label>
+
+                                <label class="left-block">password:
+                                    <input class="form-control" formControlName="password">
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" (click)="closeEditConnectionDialog()">Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" [disabled]="dbConnectionForm.pristine"
+                                (click)="saveConnectionConfig()">Save
+                        </button>
+                    </div>
+                </clr-modal>
+            </div>
+
+            <div class="form-group">
+                <label>Select table and analyze options:</label>
+                <!--<div class="form-group">-->
+                <div>
+
+                    <clr-dropdown name="clr-dropdown-tables">
+                        <button clrDropdownTrigger class="btn">
+                            {{currentTableName}}
+                            <clr-icon shape="caret down"></clr-icon>
+                        </button>
+                        <clr-dropdown-menu>
+                            <a *ngFor="let tableName of tableNames | async" (click)="selectTable(tableName)"
+                               clrDropdownItem>{{tableName}}</a>
+                        </clr-dropdown-menu>
+                    </clr-dropdown>
+
+                </div>
+                <br>
+                <div class="checkbox">
+                    <input type="checkbox" name="checkbox1" id="check_columns_added"
+                           [(ngModel)]="analysisOptions.columns_added"
+                           name="columns_added" checked>
+                    <label for="check_columns_added">Table schema changed</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="checkbox2" id="check_rows_updated"
+                           [(ngModel)]="analysisOptions.rows_updated"
+                           name="rows_updated" checked>
+                    <label for="check_rows_updated">Rows been updated</label>
+                </div>
+                <!--div class="checkbox">
+                    <input type="checkbox" name="checkbox3" id="check_schema_version" [(ngModel)]="analysisOptions.schema_version"
+                           name="schema_version" checked >
+                    <label for="check_schema_version">Column type changed</label>
+                </div-->
+
+            </div>
+
+            <button type="submit" class="btn btn-success" disabled="{{gatherDataIsDisabled ? true : undefined}}"
+                    id="runButton" (click)="gatherData()">Gather Data
+            </button>
+            <button class="btn btn-primary" disabled="{{analyzeIsDisabled ? true : undefined}}" id="analyzeButton"
+                    (click)="analyze()">Analyze
+            </button>
+            <button class="btn btn-outline" id="clearButton" (click)="clear()">Clear</button>
+
+            <!--</section>-->
+            <!--<section class="form-block">-->
+
+            <br>
+            <div *ngIf="isResultsAndErrorsAreHidden == false">
+                <div align="left">
+                    <div *ngIf="errors.length == 0">
+                        <!-- Show results if there is no errors -->
+                        <div *ngIf="columnSchemaChanges.length != 0">
+                            <h3><b>Analysis results</b></h3>
+                            <p>Table '{{currentTableName}}' column schema status: {{schemaStatus}}. Column changes:</p>
+                            <clr-datagrid>
+                                <clr-dg-column>Name</clr-dg-column>
+                                <clr-dg-column>Action</clr-dg-column>
+                                <clr-dg-column>Old Type</clr-dg-column>
+                                <clr-dg-column>New Type</clr-dg-column>
+
+                                <clr-dg-row *ngFor="let columnChange of columnSchemaChanges">
+                                    <clr-dg-cell>{{columnChange.name}}</clr-dg-cell>
+                                    <clr-dg-cell>{{columnChange.action}}</clr-dg-cell>
+                                    <clr-dg-cell>{{columnChange.oldType}}</clr-dg-cell>
+                                    <clr-dg-cell>{{columnChange.newType}}</clr-dg-cell>
+                                </clr-dg-row>
+
+                                <clr-dg-footer>{{columnSchemaChanges.length}} column schema changes</clr-dg-footer>
+                            </clr-datagrid>
+                        </div>
+                        <div *ngFor='let result of results' class='is-info' align="bottom"><p>{{result}}</p></div>
+                    </div>
+                    <div *ngFor='let error of errors' class="is-error"> {{error}}</div>
+                </div>
+
 
             </div>
             <br>
-            <div class="checkbox">
-                <input type="checkbox" name="checkbox1" id="check_columns_added" [(ngModel)]="analysisOptions.columns_added"
-                       name="columns_added" checked>
-                <label for="check_columns_added">Table schema changed</label>
-            </div>
-            <div class="checkbox">
-                <input type="checkbox" name="checkbox2" id="check_rows_updated"  [(ngModel)]="analysisOptions.rows_updated"
-                       name="rows_updated" checked>
-                <label for="check_rows_updated">Rows been updated</label>
-            </div>
-            <!--div class="checkbox">
-                <input type="checkbox" name="checkbox3" id="check_schema_version" [(ngModel)]="analysisOptions.schema_version"
-                       name="schema_version" checked >
-                <label for="check_schema_version">Column type changed</label>
-            </div-->
 
-        </div>
-
-        <button type="submit" class="btn btn-success" disabled="{{gatherDataIsDisabled ? true : undefined}}" id="runButton" (click)="gatherData()">Gather Data</button>
-        <button class="btn btn-primary" disabled="{{analyzeIsDisabled ? true : undefined}}" id="analyzeButton" (click)="analyze()">Analyze</button>
-        <button class="btn btn-outline" id="clearButton" (click)="clear()">Clear</button>
-
-    <!--</section>-->
-    <!--<section class="form-block">-->
-
-        <br>
-         <div *ngIf="isResultsAndErrorsAreHidden == false">
-             <div align="left">
-                 <div *ngIf="errors.length == 0">
-                    <!-- Show results if there is no errors -->
-                     <div *ngIf="columnSchemaChanges.length != 0">
-                         <h3><b>Analysis results</b></h3>
-                         <p>Table '{{currentTableName}}' column schema status: {{schemaStatus}}. Column changes:</p>
-                         <clr-datagrid>
-                             <clr-dg-column>Name</clr-dg-column>
-                             <clr-dg-column>Action</clr-dg-column>
-                             <clr-dg-column>Old Type</clr-dg-column>
-                             <clr-dg-column>New Type</clr-dg-column>
-
-                             <clr-dg-row *ngFor="let columnChange of columnSchemaChanges">
-                                 <clr-dg-cell>{{columnChange.name}}</clr-dg-cell>
-                                 <clr-dg-cell>{{columnChange.action}}</clr-dg-cell>
-                                 <clr-dg-cell>{{columnChange.oldType}}</clr-dg-cell>
-                                 <clr-dg-cell>{{columnChange.newType}}</clr-dg-cell>
-                             </clr-dg-row>
-
-                             <clr-dg-footer>{{columnSchemaChanges.length}} column schema changes</clr-dg-footer>
-                         </clr-datagrid>
-                     </div>
-                     <div *ngFor='let result of results' class='is-info' align="bottom"><p>{{result}}</p> </div>
-                 </div>
-                 <div *ngFor='let error of errors' class="is-error"> {{error}} </div>
-             </div>
-
-
-         </div>
-         <br>
-
-    </section>
+        </section>
     </div>
 
- </form>
+</form>
