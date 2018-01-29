@@ -83,7 +83,7 @@ export class HomeComponent {
         }, error => {
             this.isResultsAndErrosAreHidden = false;
             console.error("Can't perform table analysis error occured: " + JSON.stringify(error.message));
-            this.errors.push("Can't perform table analysis error occured: " + JSON.stringify(error.message);
+            this.errors.push("Can't perform table analysis error occured: " + JSON.stringify(error.message));
         );
     }
 
