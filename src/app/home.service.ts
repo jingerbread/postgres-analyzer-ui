@@ -34,7 +34,7 @@ export class HomeService {
 
     performAnalysis(analysisId: String): Observable<AnalysisResult> {
 
-        return this.http.post<AnalysisResult>( this.performAnalysisUrl + 'CQxRC'/*TODO: analysisId*/, null,
+        return this.http.post<AnalysisResult>( this.performAnalysisUrl + '1vINJ'/*TODO: analysisId*/, null,
             {headers: new HttpHeaders()
                     .append('Accept', 'application/json')
                     .append('Content-Type', 'application/json')});
