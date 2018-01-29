@@ -1,5 +1,5 @@
 
-export class Result {
+export class GetTableNamesResult {
 
     constructor(
         public status: string,
@@ -7,8 +7,6 @@ export class Result {
         public error: string,
         public statusCode: number,
         public successful: boolean,
+        public data: string[]
     ) { }
 }
-
-
-

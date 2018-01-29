@@ -13,7 +13,7 @@
                         <clr-icon shape="caret down"></clr-icon>
                     </button>
                     <clr-dropdown-menu>
-                        <a *ngFor="let tableName of tableNames" (click)="selectTable(tableName)" clrDropdownItem>{{tableName}}</a>
+                        <a *ngFor="let tableName of tableNames | async" (click)="selectTable(tableName)" clrDropdownItem>{{tableName}}</a>
                     </clr-dropdown-menu>
                 </clr-dropdown>
 

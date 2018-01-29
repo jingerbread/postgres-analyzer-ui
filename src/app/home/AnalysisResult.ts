@@ -7,6 +7,7 @@ export class AnalysisResult {
         public analysisId: string,
         public statusCode: number,
         public successful: boolean,
+        public error: string,
         public data: TableSchemaAnalysisResult[]
     ) { }
 }
