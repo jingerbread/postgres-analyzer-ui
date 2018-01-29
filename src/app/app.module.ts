@@ -9,7 +9,6 @@ import { ROUTING } from "./app.routing";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
 import {HomeService} from "./home.service";
-import { MessagesComponent } from './messages/messages.component';
 import { MessageService } from './message.service';
 import {HttpClientModule} from "@angular/common/http";
 
@@ -17,8 +16,7 @@ import {HttpClientModule} from "@angular/common/http";
     declarations: [
         AppComponent,
         AboutComponent,
-        HomeComponent,
-        MessagesComponent
+        HomeComponent
     ],
     imports: [
         BrowserAnimationsModule,

@@ -7,8 +7,8 @@ import {Component, OnInit} from "@angular/core";
 import { HomeService } from '../home.service';
 import { MessageService } from '../message.service';
 import { Options } from '../options'
-import {TableSchemaAnalysisResult} from "./TableSchemaAnalysisResult";
-import {ColumnSchemaChange} from "./ColumnSchemaChange";
+import {TableSchemaAnalysisResult} from "./responses/TableSchemaAnalysisResult";
+import {ColumnSchemaChange} from "./responses/ColumnSchemaChange";
 import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
 

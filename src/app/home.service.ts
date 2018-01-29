@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from "rxjs";
 import {GatherDataResult} from "./home/responses/GatherDataResult";
 import {GetTableNamesResult} from "./home/responses/GetTableNamesResult";
-import {AnalysisResult} from "./home/AnalysisResult";
+import {AnalysisResult} from "./home/responses/AnalysisResult";
 
 @Injectable()
 export class HomeService {
