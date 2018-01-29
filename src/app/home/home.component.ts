@@ -5,31 +5,38 @@
  */
 import {Component, OnInit} from "@angular/core";
 import { HomeService } from '../home.service';
-import { MessageService } from '../message.service';
 import { Options } from '../options'
 import {TableSchemaAnalysisResult} from "./responses/TableSchemaAnalysisResult";
 import {ColumnSchemaChange} from "./responses/ColumnSchemaChange";
 import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DBConnection} from "./connection/DBConnection";
 
 @Component({
     styleUrls: ['./home.component.scss'],
     templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-
+    /****Current state****/
+    dbConnectionForm: FormGroup;
+    dbConnection: DBConnection;
     analysisId: string;
     currentTableName: string = 'Choose DB tables';
-    model = new Options(true, false, true, ['view_backupjob', 'view_bkup_server-mapping', 'qwview_clonejobe', 'view_host_config']);
+    analysisOptions = new Options(true, false, true,
+        ['view_backupjob', 'view_bkup_server-mapping', 'qwview_clonejobe', 'view_host_config']);
     /*tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];*/
     tableNames: Observable<String[]>;
-    results: string[] = [];
     columnSchemaChanges: ColumnSchemaChange[] = [];
     schemaStatus: string;
+    /****Display messages****/
+    results: string[] = [];
     errors: string[] = [];
-    isResultsAndErrosAreHidden = true;
+    /****Display options****/
+    isResultsAndErrorsAreHidden: Boolean = true;
     analyzeIsDisabled: Boolean = true;
     gatherDataIsDisabled: Boolean = true;
+    editConnectionDialogIsShown: Boolean = false;
 
     ngOnInit() {
         this.columnSchemaChanges = [];
@@ -37,14 +44,23 @@ export class HomeComponent implements OnInit {
             console.log("Get table names for public schema: " + JSON.stringify(r));
             this.tableNames = of(r.data);
         }, error => {
-            this.isResultsAndErrosAreHidden = false;
+            this.isResultsAndErrorsAreHidden = false;
             console.error("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
             this.errors.push("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
         });
     }
 
-    constructor(private messageService: MessageService, private homeService: HomeService) {
+    constructor(private fb: FormBuilder, private homeService: HomeService) {
+        this.createForm();
+    }
 
+    createForm() {
+        this.dbConnectionForm = this.fb.group({// <--- the FormControl called "name"
+            dbUrl: ['', Validators.required ],
+            schemaName: ['', Validators.required ],
+            user: ['', Validators.required ],
+            password: ['', Validators.required ]
+        });
     }
 
     gatherData(): void {
@@ -54,13 +70,27 @@ export class HomeComponent implements OnInit {
             this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
             this.analysisId = r.analysisId;
             this.analyzeIsDisabled = false;
-            this.isResultsAndErrosAreHidden = false;
+            this.isResultsAndErrorsAreHidden = false;
             this.errors = [];
         }, error => {
-            this.isResultsAndErrosAreHidden = false;
+            this.isResultsAndErrorsAreHidden = false;
             console.error("Can't gather data result error occurred: " + JSON.stringify(error.message));
             this.errors.push("Can't gather data result error occurred: " + JSON.stringify(error.message));
         });
+    }
+
+    closeEditConnectionDialog(): void {
+        this.editConnectionDialogIsShown = false;
+    }
+
+    showEditConnectionDialog(): void {
+        this.editConnectionDialogIsShown = true;
+    }
+
+    saveConnectionConfig(): void {
+        const connection = this.dbConnectionForm.value;
+        this.dbConnection = new DBConnection(connection.dbUrl, connection.schemaName, connection.user, connection.password);
+        this.closeEditConnectionDialog();
     }
 
     analyze(): void {
@@ -77,13 +107,13 @@ export class HomeComponent implements OnInit {
 
                     this.columnSchemaChanges = analysis.columnChanges;
                     this.schemaStatus = analysis.schemaUpdateStatus;
-                    this.isResultsAndErrosAreHidden = false;
+                    this.isResultsAndErrorsAreHidden = false;
                 } else {
                     this.results.push('No data');
                 }
             }
         }, error => {
-            this.isResultsAndErrosAreHidden = false;
+            this.isResultsAndErrorsAreHidden = false;
             console.error("Can't perform table analysis error occured: " + JSON.stringify(error.message));
             this.errors.push("Can't perform table analysis error occured: " + JSON.stringify(error.message));
         });
@@ -103,7 +133,7 @@ export class HomeComponent implements OnInit {
         this.currentTableName = 'Choose DB tables';
         this.analysisId = null;
 
-        this.isResultsAndErrosAreHidden = true;
+        this.isResultsAndErrorsAreHidden = true;
         this.analyzeIsDisabled = true;
         this.gatherDataIsDisabled = true;
         console.clear();

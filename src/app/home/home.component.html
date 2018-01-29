@@ -4,8 +4,35 @@
          <div class="form-group">
              <label>Configure connection</label>
              <div>
-                 <button class="btn btn-primary" id="connectButton" (click)="clear()">Connect to db</button>
+                 <button class="btn btn-primary" id="connectButton" (click)="showEditConnectionDialog()">Connect to db</button>
              </div>
+
+             <clr-modal [(clrModalOpen)]="editConnectionDialogIsShown">
+             <h3 class="modal-title">DB Connection dialog</h3>
+             <div class="edit-connection-body modal-body">
+             <p>Edit db connection settings</p>
+                 <form [formGroup]="dbConnectionForm" (ngSubmit)="onSubmit()" novalidate>
+                     <div class="form-group">
+                         <label class="center-block">dbUrl:
+                             <input class="form-control" formControlName="dbUrl">
+                         </label>
+                         <label class="center-block">schema name:
+                             <input class="form-control" formControlName="schemaName">
+                         </label>
+                         <label class="center-block">user:
+                             <input class="form-control" formControlName="user">
+                         </label>
+                         <label class="center-block">password:
+                             <input class="form-control" formControlName="password">
+                         </label>
+                     </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+             <button type="button" class="btn btn-outline" (click)="closeEditConnectionDialog()">Cancel</button>
+             <button type="button" class="btn btn-primary" [disabled]="dbConnectionForm.pristine" (click)="saveConnectionConfig()">Save</button>
+             </div>
+             </clr-modal>
          </div>
 
         <div class="form-group">
@@ -26,17 +53,17 @@
             </div>
             <br>
             <div class="checkbox">
-                <input type="checkbox" name="checkbox1" id="check_columns_added" [(ngModel)]="model.columns_added"
+                <input type="checkbox" name="checkbox1" id="check_columns_added" [(ngModel)]="analysisOptions.columns_added"
                        name="columns_added" checked>
                 <label for="check_columns_added">Table schema changed</label>
             </div>
             <div class="checkbox">
-                <input type="checkbox" name="checkbox2" id="check_rows_updated"  [(ngModel)]="model.rows_updated"
+                <input type="checkbox" name="checkbox2" id="check_rows_updated"  [(ngModel)]="analysisOptions.rows_updated"
                        name="rows_updated" checked>
                 <label for="check_rows_updated">Rows been updated</label>
             </div>
             <!--div class="checkbox">
-                <input type="checkbox" name="checkbox3" id="check_schema_version" [(ngModel)]="model.schema_version"
+                <input type="checkbox" name="checkbox3" id="check_schema_version" [(ngModel)]="analysisOptions.schema_version"
                        name="schema_version" checked >
                 <label for="check_schema_version">Column type changed</label>
             </div-->
@@ -51,7 +78,7 @@
     <!--<section class="form-block">-->
 
         <br>
-         <div *ngIf="isResultsAndErrosAreHidden == false">
+         <div *ngIf="isResultsAndErrorsAreHidden == false">
              <div align="left">
                  <div *ngIf="errors.length == 0">
                     <!-- Show results if there is no errors -->
