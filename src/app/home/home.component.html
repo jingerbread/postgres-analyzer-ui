@@ -50,7 +50,7 @@
                  <div *ngIf="errors.length == 0">
                     <!-- Show results if there is no errors -->
                      <div *ngIf="columnSchemaChanges.length != 0">
-                         <p><b>Analysis {{analysisId}} results</b></p>
+                         <h3><b>Analysis results</b></h3>
                          <p>Table '{{currentTableName}}' column schema status: {{schemaStatus}}. Column changes:</p>
                          <clr-datagrid>
                              <clr-dg-column>Name</clr-dg-column>
