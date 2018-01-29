@@ -20,8 +20,6 @@ import {error} from "selenium-webdriver";
 })
 export class HomeComponent {
 
-    constructor(private messageService: MessageService, private homeService: HomeService) { }
-
     analysisId: string
 
     currentTableName = 'Choose DB tables';
@@ -44,6 +42,10 @@ export class HomeComponent {
 
     gatherDataIsDisabled:Boolean = true;
 
+    constructor(private messageService: MessageService, private homeService: HomeService) {
+        this.columnSchemaChanges = [];
+    }
+
     gatherData(): void {
         // run server request
         this.homeService.getGatherDataResult("messages").subscribe(r => {
@@ -57,7 +59,7 @@ export class HomeComponent {
         }, error => {
             this.isResultsAndErrosAreHidden = false;
             console.error("Can't gather data result error occured: " + JSON.stringify(error.message));
-            this.errors.push("Can't gather data result error occured: " + JSON.stringify(error.message);
+            this.errors.push("Can't gather data result error occured: " + JSON.stringify(error.message));
         });
     }
 
