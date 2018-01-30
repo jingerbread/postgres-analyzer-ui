@@ -9,29 +9,29 @@
                     </button>
                 </div>
 
-                <clr-modal [(clrModalOpen)]="editConnectionDialogIsShown" [clrModalSize]="'xxxl'">
+                <clr-modal [(clrModalOpen)]="editConnectionDialogIsShown">
                     <h3 class="modal-title">DB Connection dialog</h3>
-                    <div class=" modal-body edit-connection-body">
-                        <p>Edit db connection settings</p>
-                        <form [formGroup]="dbConnectionForm" (ngSubmit)="onSubmit()" novalidate>
-                            <div class="form-group">
-                                <label class="left-block">dbUrl:
-                                    <input class="form-control" formControlName="dbUrl">
-                                </label>
-
-                                <label class="left-block">schema name:
-                                    <input class="form-control" formControlName="schemaName">
-                                </label>
-
-
-                                <label class="left-block">user:
-                                    <input class="form-control" formControlName="user">
-                                </label>
-
-                                <label class="left-block">password:
-                                    <input class="form-control" formControlName="password">
-                                </label>
-                            </div>
+                    <div class="modal-body">
+                        <form  [formGroup]="dbConnectionForm" (ngSubmit)="onSubmit()" novalidate>
+                            <section class="form-block">
+                                <label>Edit db connection settings:</label>
+                                <div class="form-group">
+                                    <label class="left-block">dbUrl:</label>
+                                    <input class="form-control" placeholder="jdbc:postgresql://localhost:5433/analyzer" formControlName="dbUrl">
+                                </div>
+                                <div class="form-group">
+                                    <label class="left-block">schema name:</label>
+                                    <input class="form-control"  placeholder="public" formControlName="schemaName">
+                                </div>
+                                <div class="form-group">
+                                    <label class="left-block">user:</label>
+                                    <input class="form-control" placeholder="postgres" formControlName="user">
+                                </div>
+                                <div class="form-group">
+                                    <label class="left-block">password:</label>
+                                    <input class="form-control" placeholder="Enter password" formControlName="password">
+                                </div>
+                            </section>
                         </form>
                     </div>
                     <div class="modal-footer">
