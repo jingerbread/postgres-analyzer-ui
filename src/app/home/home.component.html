@@ -31,7 +31,7 @@
                                     <label class="left-block">Password:</label>
                                     <input class="form-control" type="password" placeholder="Enter password" formControlName="password" required>
                                 </div>
-                                <div *ngIf="connectionInfoIsInvalid;else other_content">
+                                <div *ngIf="connectionInfoIsInvalid;else input_success_info">
                                     <div class="alert alert-danger">
                                         <div class="alert-items">
                                             <div class="alert-item static">
@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <ng-template #other_content>
+                                <ng-template #input_success_info>
                                     <div class="alert alert-success">
                                         <div class="alert-items">
                                             <div class="alert-item static">
