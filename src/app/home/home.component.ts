@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
             password: ['', Validators.required ]
         });
     }
-    
+
     get connectionInfoIsInvalid() {
         return this.checkConnectionInfoInputIsInvalid();
     }
@@ -71,12 +71,10 @@ export class HomeComponent implements OnInit {
         let schemaName = this.dbConnectionForm.get('schemaName');
         let user = this.dbConnectionForm.get('user');
         let password = this.dbConnectionForm.get('password');
-        let invalid = (dbUrl.invalid )
-            || (schemaName.invalid )
+        return (dbUrl.invalid)
+            || (schemaName.invalid)
             || (user.invalid)
             || (password.invalid);
-        console.log("Invalid: " + invalid);
-        return invalid;
     }
 
     closeEditConnectionDialog(): void {
