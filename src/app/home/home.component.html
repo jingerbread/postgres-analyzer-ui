@@ -17,20 +17,44 @@
                                 <label>Edit db connection settings:</label>
                                 <div class="form-group">
                                     <label class="left-block">dbUrl:</label>
-                                    <input class="form-control" placeholder="jdbc:postgresql://localhost:5433/analyzer" formControlName="dbUrl">
+                                    <input id="dbUrlInput" class="form-control" placeholder="jdbc:postgresql://localhost:5433/analyzer" formControlName="dbUrl" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="left-block">schema name:</label>
-                                    <input class="form-control"  placeholder="public" formControlName="schemaName">
+                                    <label class="left-block">Schema name:</label>
+                                    <input class="form-control"  placeholder="public" formControlName="schemaName" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="left-block">user:</label>
-                                    <input class="form-control" placeholder="postgres" formControlName="user">
+                                    <label class="left-block">User:</label>
+                                    <input class="form-control" placeholder="postgres" formControlName="user" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="left-block">password:</label>
-                                    <input class="form-control" placeholder="Enter password" formControlName="password">
+                                    <label class="left-block">Password:</label>
+                                    <input class="form-control" type="password" placeholder="Enter password" formControlName="password" required>
                                 </div>
+                                <div *ngIf="connectionInfoIsInvalid;else other_content">
+                                    <div class="alert alert-danger">
+                                        <div class="alert-items">
+                                            <div class="alert-item static">
+                                                <div class="alert-icon-wrapper">
+                                                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                                </div>
+                                                <span class="alert-text">Please, fill in connection info</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template #other_content>
+                                    <div class="alert alert-success">
+                                        <div class="alert-items">
+                                            <div class="alert-item static">
+                                                <div class="alert-icon-wrapper">
+                                                    <clr-icon class="alert-icon" shape="check-circle"></clr-icon>
+                                                </div>
+                                                <span class="alert-text">Connection info is filled</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
                             </section>
                         </form>
                     </div>

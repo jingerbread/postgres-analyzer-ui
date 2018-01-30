@@ -23,8 +23,7 @@ export class HomeComponent implements OnInit {
     dbConnection: DBConnection;
     analysisId: string;
     currentTableName: string = 'Choose DB tables';
-    analysisOptions = new Options(true, false, true,
-        ['view_backupjob', 'view_bkup_server-mapping', 'qwview_clonejobe', 'view_host_config']);
+    analysisOptions = new Options(true, false, true);
     /*tableNames = ['view_backupjob', 'view_bkup_server-mapping', 'view_clonejob', 'view_host_config'];*/
     tableNames: Observable<String[]>;
     columnSchemaChanges: ColumnSchemaChange[] = [];
@@ -62,6 +61,40 @@ export class HomeComponent implements OnInit {
             password: ['', Validators.required ]
         });
     }
+    
+    get connectionInfoIsInvalid() {
+        return this.checkConnectionInfoInputIsInvalid();
+    }
+
+    checkConnectionInfoInputIsInvalid(): Boolean {
+        let dbUrl = this.dbConnectionForm.get('dbUrl');
+        let schemaName = this.dbConnectionForm.get('schemaName');
+        let user = this.dbConnectionForm.get('user');
+        let password = this.dbConnectionForm.get('password');
+        let invalid = (dbUrl.invalid )
+            || (schemaName.invalid )
+            || (user.invalid)
+            || (password.invalid);
+        console.log("Invalid: " + invalid);
+        return invalid;
+    }
+
+    closeEditConnectionDialog(): void {
+        this.editConnectionDialogIsShown = false;
+    }
+
+    showEditConnectionDialog(): void {
+        this.editConnectionDialogIsShown = true;
+    }
+
+    saveConnectionConfig(): void {
+        if (!this.checkConnectionInfoInputIsInvalid()) {
+            const connection = this.dbConnectionForm.value;
+            this.dbConnection = new DBConnection(connection.dbUrl, connection.schemaName, connection.user, connection.password);
+            console.log("Saved db connection config: " + JSON.stringify(this.dbConnection));
+            this.closeEditConnectionDialog();
+        }
+    }
 
     gatherData(): void {
         // run server request
@@ -77,20 +110,6 @@ export class HomeComponent implements OnInit {
             console.error("Can't gather data result error occurred: " + JSON.stringify(error.message));
             this.errors.push("Can't gather data result error occurred: " + JSON.stringify(error.message));
         });
-    }
-
-    closeEditConnectionDialog(): void {
-        this.editConnectionDialogIsShown = false;
-    }
-
-    showEditConnectionDialog(): void {
-        this.editConnectionDialogIsShown = true;
-    }
-
-    saveConnectionConfig(): void {
-        const connection = this.dbConnectionForm.value;
-        this.dbConnection = new DBConnection(connection.dbUrl, connection.schemaName, connection.user, connection.password);
-        this.closeEditConnectionDialog();
     }
 
     analyze(): void {
