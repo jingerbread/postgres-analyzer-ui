@@ -1,5 +1,3 @@
-import {Column} from "./Column";
-import {ColumnTypeChanged} from "./ColumnTypeChanged";
 
 export class ColumnSchemaChange {
 
