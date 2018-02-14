@@ -81,9 +81,10 @@ export class HomeComponent implements OnInit {
     saveConnectionConfig(): void {
         if (!this.checkConnectionInfoInputIsInvalid()) {
             const connection = this.dbConnectionForm.value;
-            this.dbConnection = new DBConnection(connection.dbUrl, connection.schemaName, connection.user, connection.password);
+            this.dbConnection = new DBConnection(connection.dbUrl, connection.user, connection.password, connection.schemaName);
             console.log("Saved db connection config: " + JSON.stringify(this.dbConnection));
             this.homeService.connect2DB(this.dbConnection).subscribe(r => {
+                this.showResult(JSON.stringify(r), JSON.stringify(r));
                 this.initTableNames();
                 this.closeEditConnectionDialog();
             }, error => {
@@ -110,20 +111,28 @@ export class HomeComponent implements OnInit {
         this.homeService.gatherDataResult(this.currentTableName).subscribe(r => {
             this.isResultsAndErrorsAreHidden = false;
             if (r.status === 'INTERNAL_ERROR') {
-                console.error("Can't gather data result error occurred: " + r.error);
-                this.errors.push("Can't gather data result error occurred: " + r.error);
+                this.showError("Can't gather data result error occurred: " + r.error);
             } else {
-                console.log("Gather data result: " + JSON.stringify(r));
-                this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
+                this.showResult("Gather data result: " + JSON.stringify(r), 'Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
                 this.analysisId = r.analysisId;
                 this.analyzeIsDisabled = false;
-                this.errors = [];
             }
         }, error => {
             this.isResultsAndErrorsAreHidden = false;
-            console.error("Can't gather data result error occurred: " + JSON.stringify(error.message));
-            this.errors.push("Can't gather data result error occurred: " + JSON.stringify(error.message));
+            this.showError("Can't gather data result error occurred: " + JSON.stringify(error.message));
         });
+    }
+
+    showResult(log: string, result: string) {
+        this.errors = [];
+        console.log(log);
+        this.results.push(result);
+    }
+
+    showError(error: string) {
+        this.errors = [];
+        console.error(error);
+        this.errors.push(error);
     }
 
     analyze(): void {
