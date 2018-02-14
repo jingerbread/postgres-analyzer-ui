@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import {Component, OnInit} from "@angular/core";
-import { HomeService } from '../home.service';
+import { HomeService } from './service/home.service';
 import { Options } from '../options'
 import {TableSchemaAnalysisResult} from "./responses/TableSchemaAnalysisResult";
 import {ColumnSchemaChange} from "./responses/ColumnSchemaChange";
@@ -108,12 +108,17 @@ export class HomeComponent implements OnInit {
     gatherData(): void {
         // run server request
         this.homeService.gatherDataResult(this.currentTableName).subscribe(r => {
-            console.log("Gather data result: " + JSON.stringify(r));
-            this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
-            this.analysisId = r.analysisId;
-            this.analyzeIsDisabled = false;
             this.isResultsAndErrorsAreHidden = false;
-            this.errors = [];
+            if (r.status === 'INTERNAL_ERROR') {
+                console.error("Can't gather data result error occurred: " + r.error);
+                this.errors.push("Can't gather data result error occurred: " + r.error);
+            } else {
+                console.log("Gather data result: " + JSON.stringify(r));
+                this.results.push('Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
+                this.analysisId = r.analysisId;
+                this.analyzeIsDisabled = false;
+                this.errors = [];
+            }
         }, error => {
             this.isResultsAndErrorsAreHidden = false;
             console.error("Can't gather data result error occurred: " + JSON.stringify(error.message));

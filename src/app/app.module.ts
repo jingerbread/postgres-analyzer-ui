@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { ROUTING } from "./app.routing";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
-import {HomeService} from "./home.service";
+import {HomeService} from "./home/service/home.service";
 import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({

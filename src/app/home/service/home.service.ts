@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from "rxjs";
-import {GatherDataResult} from "./home/responses/GatherDataResult";
-import {GetTableNamesResult} from "./home/responses/GetTableNamesResult";
-import {AnalysisResult} from "./home/responses/AnalysisResult";
-import {DBConnection} from "./home/connection/DBConnection";
+import {GatherDataResult} from "../responses/GatherDataResult";
+import {GetTableNamesResult} from "../responses/GetTableNamesResult";
+import {AnalysisResult} from "../responses/AnalysisResult";
+import {DBConnection} from "../connection/DBConnection";
 
 @Injectable()
 export class HomeService {
