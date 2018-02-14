@@ -39,14 +39,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.columnSchemaChanges = [];
-        this.homeService.getTableNames('public').subscribe(r => {
-            console.log("Get table names for public schema: " + JSON.stringify(r));
-            this.tableNames = of(r.data);
-        }, error => {
-            this.isResultsAndErrorsAreHidden = false;
-            console.error("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
-            this.errors.push("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
-        });
+
     }
 
     constructor(private fb: FormBuilder, private homeService: HomeService) {
@@ -90,8 +83,26 @@ export class HomeComponent implements OnInit {
             const connection = this.dbConnectionForm.value;
             this.dbConnection = new DBConnection(connection.dbUrl, connection.schemaName, connection.user, connection.password);
             console.log("Saved db connection config: " + JSON.stringify(this.dbConnection));
-            this.closeEditConnectionDialog();
+            this.homeService.connect2DB(this.dbConnection).subscribe(r => {
+                this.initTableNames();
+                this.closeEditConnectionDialog();
+            }, error => {
+                this.isResultsAndErrorsAreHidden = false;
+                console.error("Can't connect to DB, error occurred: " + JSON.stringify(error.message));
+                this.errors.push("Can't connect to DB, error occurred: " + JSON.stringify(error.message));
+            });
         }
+    }
+
+    initTableNames(): void {
+        this.homeService.getTableNames('public').subscribe(r => {
+            console.log("Get table names for public schema: " + JSON.stringify(r));
+            this.tableNames = of(r.data);
+        }, error => {
+            this.isResultsAndErrorsAreHidden = false;
+            console.error("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
+            this.errors.push("Can't get table names for schema public error occurred: " + JSON.stringify(error.message));
+        });
     }
 
     gatherData(): void {
