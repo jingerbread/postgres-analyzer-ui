@@ -113,7 +113,8 @@ export class HomeComponent implements OnInit {
             if (r.status === 'INTERNAL_ERROR') {
                 this.showError("Can't gather data result error occurred: " + r.error);
             } else {
-                this.showResult("Gather data result: " + JSON.stringify(r), 'Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
+                this.showResult("Gather data result: " + JSON.stringify(r),
+                    'Data has been collected, status ' + r.status + '. AnalysisId: ' + r.analysisId);
                 this.analysisId = r.analysisId;
                 this.analyzeIsDisabled = false;
             }
